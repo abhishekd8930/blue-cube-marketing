@@ -1,0 +1,21 @@
+{
+  "name": "blue-cube-system",
+  "version": "1.0.0",
+  "description": "Blue Cube Garments Monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:admin": "npm run dev --workspace=admin",
+    "dev:marketing": "npm run dev --workspace=marketing",
+    "dev": "concurrently \"npm run dev:admin\" \"npm run dev:marketing\""
+  },
+  "dependencies": {
+    "firebase": "^12.12.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
