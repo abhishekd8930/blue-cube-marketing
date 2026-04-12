@@ -8,9 +8,9 @@
     "packages/*"
   ],
   "scripts": {
-    "dev:admin": "npm run dev --workspace=admin",
-    "dev:marketing": "npm run dev --workspace=marketing",
-    "dev": "concurrently \"npm run dev:admin\" \"npm run dev:marketing\""
+    "dev:manage": "npm run dev --workspace=bluecube-manage",
+    "dev:marketing": "npm run dev --workspace=bluecube-marketing",
+    "dev": "concurrently \"npm run dev:manage\" \"npm run dev:marketing\""
   },
   "dependencies": {
     "firebase": "^12.12.0"
