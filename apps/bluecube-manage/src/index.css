@@ -6,17 +6,20 @@
 
 @theme {
   --color-primary-navy: #1B365D;
-  --color-secondary-gold: #D4AF37;
-  --color-accent-champagne: #F7E7CE;
+  --color-accent-blue: #1D4ED8;
+  --color-accent-light-blue: #DBEAFE;
+  --color-base-white: #FFFFFF;
   --color-base-off-white: #F8F9FA;
   
   --font-montserrat: "Montserrat", sans-serif;
   --font-inter: "Inter", sans-serif;
+
+  --animate-fade-in: fade-in 0.5s ease-out forwards;
 }
 
 @layer utilities {
   .animate-fade-in {
-    animation: fade-in 0.5s ease-out forwards;
+    animation: var(--animate-fade-in);
   }
 }
 
@@ -34,10 +37,35 @@
 body {
   font-family: var(--font-inter);
   background-color: var(--color-base-off-white);
+  color: #1a1a1a;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-montserrat);
+  letter-spacing: -0.01em;
+}
+
+::selection {
+  background-color: var(--color-accent-blue);
+  color: white;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-base-off-white);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1B365D;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-blue);
 }
