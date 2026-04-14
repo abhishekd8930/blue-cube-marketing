@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+/* Preline UI Integration */
+@source "../../../node_modules/preline/dist/*.js";
+@import "../../../node_modules/preline/variants.css";
+
+@theme {
+  --color-primary-navy: #1B365D;
+  --color-secondary-gold: #D4AF37;
+  --color-accent-champagne: #F7E7CE;
+  --color-base-off-white: #F8F9FA;
+  
+  --font-montserrat: "Montserrat", sans-serif;
+  --font-inter: "Inter", sans-serif;
+}
+
 @layer utilities {
   .animate-fade-in {
     animation: fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -22,7 +36,12 @@ html {
 }
 
 body {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: var(--font-inter);
+  background-color: var(--color-base-off-white);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-montserrat);
 }

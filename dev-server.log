@@ -1,0 +1,113 @@
+
+> blue-cube-system@1.0.0 dev
+> concurrently "npm run dev:manage" "npm run dev:marketing"
+
+[0] 
+[0] > blue-cube-system@1.0.0 dev:manage
+[0] > npm run dev --workspace=bluecube-manage
+[0] 
+[1] 
+[1] > blue-cube-system@1.0.0 dev:marketing
+[1] > npm run dev --workspace=bluecube-marketing
+[1] 
+[0] 
+[0] > bluecube-manage@0.0.0 dev
+[0] > vite
+[0] 
+[1] 
+[1] > bluecube-marketing@0.0.0 dev
+[1] > vite
+[1] 
+[0] Port 5173 is in use, trying another one...
+[0] Port 5174 is in use, trying another one...
+[0] 
+[0]   [32m[1mVITE[22m v8.0.8[39m  [2mready in [0m[1m1096[22m[2m[0m ms[22m
+[0] 
+[0]   [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5175[22m/[39m
+[0] [2m  [32m➜[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
+[1] Port 5173 is in use, trying another one...
+[1] Port 5174 is in use, trying another one...
+[1] Port 5175 is in use, trying another one...
+[1] 
+[1]   [32m[1mVITE[22m v8.0.8[39m  [2mready in [0m[1m1091[22m[2m[0m ms[22m
+[1] 
+[1]   [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5176[22m/[39m
+[1] [2m  [32m➜[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
+[1] [2m12:50:09 pm[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mReferenceError[22m: ArrowRight is not defined
+[1] [39m > CollectionGrid src/components/CollectionGrid.jsx:41:13
+[1]     39 |            <Link to="/products" className="inline-flex items-center gap-x-2 text-sm font-bold text-primary-navy border...
+[1]     40 |              View All Products
+[1]     41 |              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+[1]        |               ^
+[1]     42 |            </Link>
+[1]     43 |          </div>
+[1]  > Object.react_stack_bottom_frame ../../node_modules/react-dom/cjs/react-dom-client.development.js:25904:19
+[1]  > renderWithHooks ../../node_modules/react-dom/cjs/react-dom-client.development.js:7662:21
+[1]  > updateFunctionComponent ../../node_modules/react-dom/cjs/react-dom-client.development.js:10166:18
+[1]  > beginWork ../../node_modules/react-dom/cjs/react-dom-client.development.js:11778:17
+[1]  > runWithFiberInDEV ../../node_modules/react-dom/cjs/react-dom-client.development.js:871:29
+[1]  > performUnitOfWork ../../node_modules/react-dom/cjs/react-dom-client.development.js:17641:21
+[1]  > workLoopSync ../../node_modules/react-dom/cjs/react-dom-client.development.js:17469:40
+[1]  > renderRootSync ../../node_modules/react-dom/cjs/react-dom-client.development.js:17450:10
+[1]  > performWorkOnRoot ../../node_modules/react-dom/cjs/react-dom-client.development.js:16583:34
+[1] 
+[1] [2m12:50:09 pm[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mAn error occurred in the <CollectionGrid> component.
+[1] 
+[1] Consider adding an error boundary to your tree to customize error handling behavior.
+[1] Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+[1] 
+[1] [2m12:50:17 pm[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mReferenceError[22m: ArrowRight is not defined
+[1] [39m > CollectionGrid src/components/CollectionGrid.jsx:41:13
+[1]     39 |            <Link to="/products" className="inline-flex items-center gap-x-2 text-sm font-bold text-primary-navy border...
+[1]     40 |              View All Products
+[1]     41 |              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+[1]        |               ^
+[1]     42 |            </Link>
+[1]     43 |          </div>
+[1]  > Object.react_stack_bottom_frame ../../node_modules/react-dom/cjs/react-dom-client.development.js:25904:19
+[1]  > renderWithHooks ../../node_modules/react-dom/cjs/react-dom-client.development.js:7662:21
+[1]  > updateFunctionComponent ../../node_modules/react-dom/cjs/react-dom-client.development.js:10166:18
+[1]  > beginWork ../../node_modules/react-dom/cjs/react-dom-client.development.js:11778:17
+[1]  > runWithFiberInDEV ../../node_modules/react-dom/cjs/react-dom-client.development.js:871:29
+[1]  > performUnitOfWork ../../node_modules/react-dom/cjs/react-dom-client.development.js:17641:21
+[1]  > workLoopSync ../../node_modules/react-dom/cjs/react-dom-client.development.js:17469:40
+[1]  > renderRootSync ../../node_modules/react-dom/cjs/react-dom-client.development.js:17450:10
+[1]  > performWorkOnRoot ../../node_modules/react-dom/cjs/react-dom-client.development.js:16583:34
+[1] 
+[1] [2m12:50:17 pm[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mAn error occurred in the <CollectionGrid> component.
+[1] 
+[1] Consider adding an error boundary to your tree to customize error handling behavior.
+[1] Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+[1] 
+[1] [2m12:50:30 pm[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mReferenceError[22m: ArrowRight is not defined
+[1] [39m > CollectionGrid src/components/CollectionGrid.jsx:41:13
+[1]     39 |            <Link to="/products" className="inline-flex items-center gap-x-2 text-sm font-bold text-primary-navy border...
+[1]     40 |              View All Products
+[1]     41 |              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+[1]        |               ^
+[1]     42 |            </Link>
+[1]     43 |          </div>
+[1]  > Object.react_stack_bottom_frame ../../node_modules/react-dom/cjs/react-dom-client.development.js:25904:19
+[1]  > renderWithHooks ../../node_modules/react-dom/cjs/react-dom-client.development.js:7662:21
+[1]  > updateFunctionComponent ../../node_modules/react-dom/cjs/react-dom-client.development.js:10166:18
+[1]  > beginWork ../../node_modules/react-dom/cjs/react-dom-client.development.js:11778:17
+[1]  > runWithFiberInDEV ../../node_modules/react-dom/cjs/react-dom-client.development.js:871:29
+[1]  > performUnitOfWork ../../node_modules/react-dom/cjs/react-dom-client.development.js:17641:21
+[1]  > workLoopSync ../../node_modules/react-dom/cjs/react-dom-client.development.js:17469:40
+[1]  > renderRootSync ../../node_modules/react-dom/cjs/react-dom-client.development.js:17450:10
+[1]  > performWorkOnRoot ../../node_modules/react-dom/cjs/react-dom-client.development.js:16583:34
+[1] 
+[1] [2m12:50:30 pm[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [2m[console.warn] [22mAn error occurred in the <CollectionGrid> component.
+[1] 
+[1] Consider adding an error boundary to your tree to customize error handling behavior.
+[1] Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+[1] 
+[0] npm error Lifecycle script `dev` failed with error:
+[1] ^C
+[0] npm error code 3221225786
+[1] Terminate batch job (Y/N)? 
+[0] ^CTerminate batch job (Y/N)? 
+[1] ^CTerminate batch job (Y/N)? 
+[0] ^CTerminate batch job (Y/N)? 
+[1] npm run dev:marketing exited with code 3221225786
+[0] npm run dev:manage exited with code 3221225786

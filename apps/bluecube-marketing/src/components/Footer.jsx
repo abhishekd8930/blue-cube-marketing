@@ -1,80 +1,107 @@
 import React from 'react';
-import { Mail, MapPin, Phone, MessageCircle } from 'lucide-react';
+import {
+  Mail,
+  MapPin,
+  Phone,
+  MessageCircle,
+  Camera,
+  Users,
+  BriefcaseBusiness,
+} from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer id="contact" className="bg-gray-900 border-t border-gray-800 text-gray-300 pt-20 pb-10">
+    <footer id="contact" className="bg-primary-navy py-12 md:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        
+        {/* Main Footer Content */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 border-b border-white/10 pb-16">
+          
+          {/* Brand Section */}
           <div className="lg:col-span-1">
-            <h3 className="text-white font-bold text-2xl tracking-tight mb-6">BLUE CUBE </h3>
-            <p className="text-gray-400 font-light leading-relaxed mb-6">
-              <br /> <b> Feel the Costume</b> <br />
-              Precision garment manufacturing powered by Sri Raghavendra Fashions. Elevating wholesale standards.
+            <h3 className="text-white font-montserrat font-extrabold text-2xl tracking-tighter uppercase mb-6">
+              Blue Cube
+            </h3>
+            <p className="text-white/60 text-sm font-light leading-relaxed mb-8">
+              Excellence in garment manufacturing. Powered by the generation-spanning legacy of <strong>Sri Raghavendra Fashions</strong>, Bangalore.
             </p>
-          </div>
-
-          <div>
-            <h4 className="text-white font-semibold mb-6">Quick Links</h4>
-            <ul className="space-y-4 font-light">
-              <li><a href="#home" className="hover:text-white transition-colors">Home</a></li>
-              <li><a href="#collection" className="hover:text-white transition-colors">Collections</a></li>
-              <li><a href="#about" className="hover:text-white transition-colors">Heritage</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-white font-semibold mb-6">Contact Us</h4>
-            <ul className="space-y-4 font-light text-sm">
-              <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-gray-500 shrink-0 mt-0.5" />
-                <span>
-                  Blue Cube<br />
-                  Sri Raghavendra Fashions<br />
-                  03, 12th A'Main Road,Kamakshipalya<br />
-                  Bangalore, Karnataka 560079
-                </span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-gray-500" />
-                <a href="mailto:info@bluecube.in" className="hover:text-white transition-colors">info@bluecube.in</a>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-gray-500" />
-                <a href="tel:+919980126185" className="hover:text-white transition-colors">+91 9980126185
-
+            <div className="flex items-center gap-x-4">
+              {[Camera, Users, BriefcaseBusiness].map((Icon, idx) => (
+                <a key={idx} href="#" className="p-2 bg-white/5 hover:bg-secondary-gold text-white rounded-sm transition-colors">
+                  <Icon className="w-4 h-4" />
                 </a>
-              </li>
+              ))}
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <div>
+            <h4 className="text-white font-bold text-sm uppercase tracking-[0.2em] mb-6">Quick Links</h4>
+            <ul className="space-y-3">
+              {['Home', 'Collections', 'Heritage', 'Wholesale'].map((link) => (
+                <li key={link}>
+                  <a href={`/#${link.toLowerCase()}`} className="text-white/60 text-sm hover:text-secondary-gold transition-colors font-medium">
+                    {link}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
+          {/* Contact Info */}
           <div>
-            <h4 className="text-white font-semibold mb-6">Quick Support</h4>
-            <p className="text-sm font-light text-gray-400 leading-relaxed mb-6">
-              Need immediate assistance? Reach out to our wholesale support team directly on WhatsApp.
+            <h4 className="text-white font-bold text-sm uppercase tracking-[0.2em] mb-6">HQ Address</h4>
+            <div className="space-y-3">
+              <div className="flex items-start gap-x-3 text-white/60 text-sm leading-relaxed">
+                <MapPin className="w-5 h-5 text-secondary-gold shrink-0 mt-0.5" />
+                <span>
+                  #03, 12th A'Main Road,<br />
+                  Kamakshipalya, Bangalore,<br />
+                  Karnataka, India - 560079
+                </span>
+              </div>
+              <div className="flex items-center gap-x-3 text-white/60 text-sm">
+                <Phone className="w-5 h-5 text-secondary-gold shrink-0" />
+                <a href="tel:+919980126185" className="hover:text-white transition-colors">+91 9980126185</a>
+              </div>
+              <div className="flex items-center gap-x-3 text-white/60 text-sm">
+                <Mail className="w-5 h-5 text-secondary-gold shrink-0" />
+                <a href="mailto:info@bluecube.in" className="hover:text-white transition-colors">info@bluecube.in</a>
+              </div>
+            </div>
+          </div>
+
+          {/* Support/CTA */}
+          <div className="flex flex-col">
+            <h4 className="text-white font-bold text-sm uppercase tracking-[0.2em] mb-6">Wholesale Support</h4>
+            <p className="text-white/60 text-xs mb-6 leading-relaxed">
+              Inquire about bulk orders or manufacturing partnerships directly via WhatsApp.
             </p>
             <a
               href="https://wa.me/919980126185"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white px-6 py-3 rounded-sm font-medium transition-colors w-full sm:w-auto shadow-lg"
+              className="mt-auto group inline-flex items-center justify-center gap-x-2 py-4 px-6 rounded-sm bg-[#25D366] text-white text-sm font-bold hover:bg-[#1ebd5b] transition-all shadow-xl shadow-[#1ebd5b]/10"
             >
               <MessageCircle className="w-5 h-5" />
               Chat on WhatsApp
             </a>
           </div>
+
         </div>
 
-        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-gray-500 font-light">
-            &copy; {new Date().getFullYear()} Blue Cube by Sri Raghavendra Fashions. All rights reserved.
+        {/* Footer Bottom */}
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
+          <p className="text-[10px] uppercase tracking-widest text-white/40 font-bold">
+            &copy; {new Date().getFullYear()} Blue Cube by Sri Raghavendra Fashions. All Rights Reserved.
           </p>
-          <div className="flex gap-6">
-            <a href="#" className="text-xs text-gray-500 hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="text-xs text-gray-500 hover:text-white transition-colors">Terms of Service</a>
+          <div className="flex items-center gap-x-8">
+            <a href="#" className="text-[10px] uppercase tracking-widest text-white/40 hover:text-white font-bold transition-colors">Privacy</a>
+            <a href="#" className="text-[10px] uppercase tracking-widest text-white/40 hover:text-white font-bold transition-colors">Terms</a>
+            <a href="#" className="text-[10px] uppercase tracking-widest text-white/40 hover:text-white font-bold transition-colors">Contact</a>
           </div>
         </div>
+
       </div>
     </footer>
   );

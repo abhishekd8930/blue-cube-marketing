@@ -1,37 +1,46 @@
 import React from 'react';
+import { ShoppingCart, Eye } from 'lucide-react';
 
 export default function ProductCard({ title, price, category, imageUrl }) {
   return (
-    <div className="group cursor-pointer">
-      <div className="relative aspect-[3/4] overflow-hidden rounded-sm bg-gray-100 mb-4">
-        {imageUrl ? (
-          <img 
-            src={imageUrl} 
-            alt={title} 
-            className="object-cover w-full h-full object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-400 group-hover:scale-105 transition-transform duration-700 ease-out">
-            No Image
-          </div>
-        )}
+    <div className="group flex flex-col h-full bg-white border border-gray-200 shadow-sm rounded-sm overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary-navy/20">
+      
+      {/* Image Container with Zoom */}
+      <div className="relative aspect-[3/4] overflow-hidden bg-gray-100">
+        <img 
+          src={imageUrl} 
+          alt={title} 
+          className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-110"
+        />
         
-        {/* Overlay Action */}
-        <div className="absolute inset-0 bg-black/5 group-hover:bg-black/20 transition-colors duration-300 pointer-events-none flex items-end p-4">
-          <div className="translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 w-full">
-            <button className="w-full bg-white text-gray-900 font-medium py-3 rounded-sm shadow-lg pointer-events-auto hover:bg-gray-50">
-              Quick View
-            </button>
-          </div>
+        {/* Hover Overlay */}
+        <div className="absolute inset-0 bg-primary-navy/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3">
+          <button className="p-3 bg-white rounded-full text-primary-navy hover:bg-secondary-gold hover:text-white transition-all transform translate-y-4 group-hover:translate-y-0 duration-300">
+            <ShoppingCart className="w-5 h-5" />
+          </button>
+          <button className="p-3 bg-white rounded-full text-primary-navy hover:bg-secondary-gold hover:text-white transition-all transform translate-y-4 group-hover:translate-y-0 duration-300 delay-75">
+            <Eye className="w-5 h-5" />
+          </button>
         </div>
       </div>
 
-      <div className="flex justify-between items-start">
-        <div>
-          <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">{category}</p>
-          <h3 className="text-lg font-medium text-gray-900 tracking-tight">{title}</h3>
+      {/* Card Content */}
+      <div className="p-5 flex flex-col flex-1">
+        <div className="mb-2">
+          <span className="text-[10px] font-bold text-secondary-gold uppercase tracking-[0.2em]">{category}</span>
+          <h3 className="text-lg font-bold text-gray-900 font-montserrat tracking-tight mt-1 line-clamp-1 group-hover:text-primary-navy transition-colors">
+            {title}
+          </h3>
         </div>
-        <p className="text-lg font-semibold text-blue-900">₹{price}</p>
+        
+        <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
+          <p className="text-xl font-extrabold text-primary-navy font-montserrat">
+            ₹{price.toLocaleString('en-IN')}
+          </p>
+          <button className="text-xs font-semibold text-gray-500 hover:underline transition-all underline-offset-4 decoration-secondary-gold decoration-2">
+            View Details
+          </button>
+        </div>
       </div>
     </div>
   );

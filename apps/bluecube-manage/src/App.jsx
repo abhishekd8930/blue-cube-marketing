@@ -1,25 +1,35 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import AdminLayout from './layouts/AdminLayout';
-import Login from './pages/Login';
-import DashboardHome from './pages/DashboardHome';
-import ProductManagement from './pages/ProductManagement';
+import InventoryPage from './pages/InventoryPage';
+import UploadPage from './pages/UploadPage';
+
+import 'preline';
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        
-        {/* Protected Routes Wrapper */}
-        <Route path="/" element={<AdminLayout />}>
-          <Route index element={<DashboardHome />} />
-          <Route path="products" element={<ProductManagement />} />
-        </Route>
+  const location = useLocation();
 
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+  useEffect(() => {
+    if (window.HSStaticMethods) {
+      window.HSStaticMethods.autoInit();
+    }
+  }, [location.pathname]);
+
+  return (
+    <Routes>
+      <Route path="/" element={<AdminLayout />}>
+        <Route index element={
+          <div className="p-4 sm:p-6 lg:p-8">
+            <h1 className="text-2xl font-bold font-montserrat text-primary-navy uppercase tracking-tight italic">
+              Dashboard <span className="text-secondary-gold not-italic">Overview</span>
+            </h1>
+            <p className="text-gray-500 mt-2">Welcome to the Blue Cube administration portal.</p>
+          </div>
+        } />
+        <Route path="inventory" element={<InventoryPage />} />
+        <Route path="upload" element={<UploadPage />} />
+      </Route>
+    </Routes>
   );
 }
 
