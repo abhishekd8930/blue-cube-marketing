@@ -5,13 +5,13 @@
 @import "../../../node_modules/preline/variants.css";
 
 @theme {
-  --color-primary-navy: #1B365D;
-  --color-accent-blue: #1D4ED8;
-  --color-accent-light-blue: #DBEAFE;
+  --color-primary-charcoal: #1A1A1A;
+  --color-accent-blue: #0066FF;
+  --color-accent-light-blue: #EBF2FF;
   --color-base-white: #FFFFFF;
-  --color-base-off-white: #F8F9FA;
+  --color-base-off-white: #F9FAFB;
   
-  --font-montserrat: "Montserrat", sans-serif;
+  --font-jakarta: "Plus Jakarta Sans", sans-serif;
   --font-inter: "Inter", sans-serif;
 
   --animate-fade-in: fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -41,14 +41,16 @@ html {
 body {
   font-family: var(--font-inter);
   background-color: var(--color-base-white);
-  color: #1a1a1a;
+  color: var(--color-primary-charcoal);
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-montserrat);
+  font-family: var(--font-jakarta);
   letter-spacing: -0.02em;
+  font-weight: 700;
 }
 
 ::selection {
@@ -66,10 +68,22 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1B365D;
+  background: var(--color-accent-blue);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-accent-blue);
+}
+
+/* Adjust the main content wrapper */
+main, .content-wrapper {
+  margin-top: 0 !important;
+  padding-top: 2rem !important; /* Adjust this value as needed */
+}
+
+/* Ensure the header isn't taking up ghost space */
+header {
+  height: auto !important;
+  margin-bottom: 0 !important;
 }

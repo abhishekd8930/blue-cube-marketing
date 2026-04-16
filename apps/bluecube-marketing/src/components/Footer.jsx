@@ -11,23 +11,23 @@ import {
 
 export default function Footer() {
   return (
-    <footer id="contact" className="bg-primary-navy py-12 md:py-20">
+    <footer id="contact" className="bg-primary-charcoal py-12 md:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 border-b border-white/10 pb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 border-b border-white/5 pb-16">
           
           {/* Brand Section */}
           <div className="lg:col-span-1">
-            <h3 className="text-white font-montserrat font-extrabold text-2xl tracking-tighter uppercase mb-6">
+            <h3 className="text-white font-jakarta font-bold text-2xl tracking-tighter uppercase mb-6">
               Blue Cube
             </h3>
-            <p className="text-white/60 text-sm font-light leading-relaxed mb-8">
+            <p className="text-white/50 text-sm font-inter leading-relaxed mb-8">
               Excellence in garment manufacturing. Powered by the generation-spanning legacy of <strong>Sri Raghavendra Fashions</strong>, Bangalore.
             </p>
             <div className="flex items-center gap-x-4">
               {[Camera, Users, BriefcaseBusiness].map((Icon, idx) => (
-                <a key={idx} href="#" className="p-2 bg-white/5 hover:bg-secondary-gold text-white rounded-sm transition-colors">
+                <a key={idx} href="#" className="p-2 bg-white/5 hover:bg-accent-blue text-white rounded-sm transition-colors">
                   <Icon className="w-4 h-4" />
                 </a>
               ))}
@@ -36,11 +36,11 @@ export default function Footer() {
 
           {/* Navigation */}
           <div>
-            <h4 className="text-white font-bold text-sm uppercase tracking-[0.2em] mb-6">Quick Links</h4>
+            <h4 className="text-white font-bold text-sm uppercase tracking-[0.2em] mb-6 font-jakarta">Quick Links</h4>
             <ul className="space-y-3">
               {['Home', 'Collections', 'Heritage', 'Wholesale'].map((link) => (
                 <li key={link}>
-                  <a href={`/#${link.toLowerCase()}`} className="text-white/60 text-sm hover:text-secondary-gold transition-colors font-medium">
+                  <a href={`/#${link.toLowerCase()}`} className="text-white/50 text-sm hover:text-accent-blue transition-colors font-medium font-inter">
                     {link}
                   </a>
                 </li>
@@ -50,22 +50,22 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-white font-bold text-sm uppercase tracking-[0.2em] mb-6">HQ Address</h4>
+            <h4 className="text-white font-bold text-sm uppercase tracking-[0.2em] mb-6 font-jakarta">HQ Address</h4>
             <div className="space-y-3">
-              <div className="flex items-start gap-x-3 text-white/60 text-sm leading-relaxed">
-                <MapPin className="w-5 h-5 text-secondary-gold shrink-0 mt-0.5" />
+              <div className="flex items-start gap-x-3 text-white/50 text-sm leading-relaxed font-inter">
+                <MapPin className="w-5 h-5 text-accent-blue shrink-0 mt-0.5" />
                 <span>
                   #03, 12th A'Main Road,<br />
                   Kamakshipalya, Bangalore,<br />
                   Karnataka, India - 560079
                 </span>
               </div>
-              <div className="flex items-center gap-x-3 text-white/60 text-sm">
-                <Phone className="w-5 h-5 text-secondary-gold shrink-0" />
+              <div className="flex items-center gap-x-3 text-white/50 text-sm font-inter">
+                <Phone className="w-5 h-5 text-accent-blue shrink-0" />
                 <a href="tel:+919980126185" className="hover:text-white transition-colors">+91 9980126185</a>
               </div>
-              <div className="flex items-center gap-x-3 text-white/60 text-sm">
-                <Mail className="w-5 h-5 text-secondary-gold shrink-0" />
+              <div className="flex items-center gap-x-3 text-white/50 text-sm font-inter">
+                <Mail className="w-5 h-5 text-accent-blue shrink-0" />
                 <a href="mailto:info@bluecube.in" className="hover:text-white transition-colors">info@bluecube.in</a>
               </div>
             </div>

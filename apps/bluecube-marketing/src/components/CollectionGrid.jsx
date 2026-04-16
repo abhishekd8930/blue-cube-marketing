@@ -29,15 +29,15 @@ export default function CollectionGrid() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 transition-all duration-700 animate-fade-in">
           <div className="max-w-2xl">
             <div className="flex items-center gap-x-2 mb-4">
-              <span className="w-8 h-px bg-secondary-gold"></span>
-              <span className="text-sm font-bold text-secondary-gold uppercase tracking-[0.2em]">Our Collections</span>
+              <span className="w-8 h-px bg-accent-blue"></span>
+              <span className="text-sm font-bold text-accent-blue uppercase tracking-[0.2em]">Our Collections</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 font-montserrat tracking-tight italic">
-              The <span className="text-primary-navy not-italic">Summer 2026</span> <br />
+            <h2 className="text-[32px] md:text-5xl font-bold text-primary-charcoal font-jakarta tracking-tight">
+              The <span className="text-accent-blue">Summer 2026</span> <br />
               Series.
             </h2>
           </div>
-          <Link to="/products" className="inline-flex items-center gap-x-2 text-sm font-bold text-primary-navy border-b-2 border-secondary-gold pb-1 hover:border-primary-navy transition-all group">
+          <Link to="/products" className="inline-flex items-center gap-x-2 text-sm font-bold text-primary-charcoal border-b-2 border-accent-blue pb-1 hover:text-accent-blue transition-all group">
             View All Products
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>

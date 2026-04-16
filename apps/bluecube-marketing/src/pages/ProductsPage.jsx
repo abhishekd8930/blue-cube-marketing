@@ -31,22 +31,22 @@ export default function ProductsPage() {
     : ALL_PRODUCTS.filter(p => p.category === selectedCategory);
 
   return (
-    <div className="pt-32 pb-24 bg-gray-50 min-h-screen">
+    <div className="pt-16 pb-24 bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Page Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
           <div>
-            <Link to="/" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-blue-600 transition-colors mb-4 group">
+            <Link to="/" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-accent-blue transition-colors mb-4 group font-inter">
               <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
               Back to Home
             </Link>
-            <h1 className="text-4xl font-bold text-gray-900 tracking-tight">Full Collection</h1>
-            <p className="text-gray-600 mt-2 font-light">Explore our complete range of premium garments.</p>
+            <h1 className="text-4xl font-bold text-primary-charcoal tracking-tight font-jakarta">Full Collection</h1>
+            <p className="text-gray-500 mt-2 font-inter leading-relaxed">Explore our complete range of premium garments.</p>
           </div>
           
           <div className="flex items-center gap-4">
-            <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-sm text-sm font-medium hover:bg-gray-50 transition-colors">
+            <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-100 rounded-sm text-sm font-medium hover:bg-gray-50 transition-colors font-jakarta text-primary-charcoal">
               <SlidersHorizontal className="w-4 h-4" />
               Sort By
             </button>
@@ -59,10 +59,10 @@ export default function ProductsPage() {
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
+              className={`px-6 py-2 rounded-full text-sm font-bold tracking-tight transition-all font-jakarta ${
                 selectedCategory === category
-                  ? 'bg-blue-900 text-white shadow-md'
-                  : 'bg-white text-gray-600 border border-gray-100 hover:border-blue-900 shadow-sm'
+                  ? 'bg-accent-blue text-white shadow-lg shadow-blue-500/20'
+                  : 'bg-white text-gray-500 border border-gray-100 hover:border-accent-blue shadow-sm'
               }`}
             >
               {category}

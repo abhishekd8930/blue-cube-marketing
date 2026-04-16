@@ -21,7 +21,7 @@ export default function AboutSection() {
   ];
 
   return (
-    <section id="about" className="py-24 bg-white relative overflow-hidden">
+    <section id="about" className="py-16 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Centered Heading Section */}
@@ -30,12 +30,12 @@ export default function AboutSection() {
             Our Heritage
           </p>
           
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 font-montserrat tracking-tight mb-10 leading-[1.15]">
+          <h2 className="text-[32px] md:text-5xl font-bold text-primary-charcoal font-jakarta tracking-tight mb-8 leading-[1.2]">
             Powered by the expertise of <br />
             <span className="text-accent-blue">Sri Raghavendra Fashions</span>
           </h2>
           
-          <p className="text-[17px] text-gray-400 font-medium leading-[1.8] max-w-3xl mx-auto">
+          <p className="text-[18px] text-gray-500 leading-[1.6] font-inter max-w-3xl mx-auto">
             Blue Cube isn't just a label; it's a commitment to excellence. Born from the rich manufacturing legacy <br className="hidden md:block" />
             of Bangalore's most trusted name, we bring enterprise-grade garment production to the modern market.
           </p>
@@ -48,8 +48,8 @@ export default function AboutSection() {
               <div className="w-14 h-14 bg-white shadow-sm border border-gray-100 rounded-xl flex items-center justify-center mb-8 group-hover:bg-accent-blue group-hover:border-accent-blue transition-all duration-500">
                  {React.cloneElement(feature.icon, { className: `w-6 h-6 transition-colors duration-500 text-accent-blue group-hover:text-white` })}
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-5 font-montserrat tracking-tight leading-tight">{feature.title}</h3>
-              <p className="text-gray-400 font-medium leading-[1.7] text-[15px]">{feature.description}</p>
+              <h3 className="text-xl font-bold text-primary-charcoal mb-4 font-jakarta tracking-tight leading-tight">{feature.title}</h3>
+              <p className="text-gray-500 font-inter leading-[1.6] text-[16px]">{feature.description}</p>
             </div>
           ))}
         </div>
