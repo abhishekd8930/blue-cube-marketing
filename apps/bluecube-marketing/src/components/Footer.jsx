@@ -54,11 +54,16 @@ export default function Footer() {
             <div className="space-y-3">
               <div className="flex items-start gap-x-3 text-white/50 text-sm leading-relaxed font-inter">
                 <MapPin className="w-5 h-5 text-accent-blue shrink-0 mt-0.5" />
-                <span>
+                <a 
+                  href="https://maps.app.goo.gl/7Wno4k22ePtHX7QE7?g_st=awb" 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="hover:text-accent-blue transition-colors"
+                >
                   #03, 12th A'Main Road,<br />
                   Kamakshipalya, Bangalore,<br />
                   Karnataka, India - 560079
-                </span>
+                </a>
               </div>
               <div className="flex items-center gap-x-3 text-white/50 text-sm font-inter">
                 <Phone className="w-5 h-5 text-accent-blue shrink-0" />

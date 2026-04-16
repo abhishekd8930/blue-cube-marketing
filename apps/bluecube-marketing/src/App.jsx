@@ -17,7 +17,7 @@ function App() {
   }, [location.pathname]);
 
   return (
-    <div className="max-w-[1440px] mx-auto min-h-screen bg-white selection:bg-accent-blue/20 selection:text-accent-blue overflow-x-hidden relative">
+    <div className="max-w-[1440px] mx-auto min-h-screen bg-white selection:bg-accent-blue/20 selection:text-accent-blue overflow-x-clip relative">
       <Header />
       <main>
         <Routes>
