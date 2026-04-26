@@ -1,48 +1,38 @@
 import React, { useState } from 'react';
+import { useCollection, useDocument } from '../hooks/useFirestore.js';
+import { db } from '../../../../packages/shared/firebase.js';
 import {
-  Zap, Tag, Star, Plus, Trash2, ToggleLeft, ShoppingBag, Edit3
+  doc,
+  setDoc,
+  addDoc,
+  deleteDoc,
+  collection,
+  updateDoc,
+  serverTimestamp,
+} from 'firebase/firestore';
+import {
+  Zap, Tag, Star, Plus, Trash2, ShoppingBag, PackageOpen
 } from 'lucide-react';
 
 /* ─────────────────────────────────────────
-   Seasonal Sales Data
+   Sale config — maps UI label ↔ Firestore field
 ───────────────────────────────────────── */
-const initialSales = [
-  { id: 1, label: 'Summer Sale',             description: 'Site-wide 20% off summer essentials',  active: true  },
-  { id: 2, label: 'Festive Discounts',        description: 'Seasonal festival offers across catalog', active: false },
-  { id: 3, label: 'End-of-Season Clearance',  description: 'Clearance on outgoing collection lines',  active: false },
-  { id: 4, label: 'New Arrivals Launch',       description: 'Spotlight pricing on new trouser range',  active: false },
+const SALE_CONFIG = [
+  { key: 'summerSale',            label: 'Summer Sale',             description: 'Site-wide 20% off summer essentials'       },
+  { key: 'festiveDiscounts',      label: 'Festive Discounts',        description: 'Seasonal festival offers across catalog'    },
+  { key: 'endOfSeasonClearance',  label: 'End-of-Season Clearance',  description: 'Clearance on outgoing collection lines'     },
+  { key: 'newArrivalsLaunch',     label: 'New Arrivals Launch',      description: 'Spotlight pricing on new trouser range'     },
 ];
 
 /* ─────────────────────────────────────────
-   Offer Manager Data
-───────────────────────────────────────── */
-const initialOffers = [
-  { id: 1, code: 'SUMMER20',   type: 'Percentage', discount: '20%',       expiry: '2025-08-31' },
-  { id: 2, code: 'BOGO50',     type: 'Buy 1 Get 1', discount: '50% off 2nd', expiry: '2025-07-15' },
-  { id: 3, code: 'FLAT500',    type: 'Flat Amount', discount: '₹500 off',  expiry: '2025-09-01' },
-];
-
-/* ─────────────────────────────────────────
-   Featured Products Data
-───────────────────────────────────────── */
-const allProducts = [
-  { id: 'PRD-101', name: 'Slim Fit Chinos',        category: 'Bottoms',     featured: true  },
-  { id: 'PRD-102', name: 'Classic Tailored Trouser',category: 'Bottoms',     featured: true  },
-  { id: 'PRD-103', name: 'Formal Pleated Pant',     category: 'Formal Wear', featured: false },
-  { id: 'PRD-104', name: 'Cargo Track Pant',        category: 'Casual Wear', featured: false },
-  { id: 'PRD-105', name: 'Linen Wide-Leg Trouser',  category: 'Resort Wear', featured: true  },
-  { id: 'PRD-106', name: 'Structured Dress Pant',   category: 'Formal Wear', featured: false },
-];
-
-/* ─────────────────────────────────────────
-   Section Card Wrapper
+   Sub-components
 ───────────────────────────────────────── */
 function SectionCard({ icon: Icon, iconColor, title, subtitle, children }) {
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-[0_4px_6px_-1px_rgb(0_0_0/0.05)] overflow-hidden">
       <div className="px-6 py-5 border-b border-gray-50 flex items-center gap-3">
         <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${iconColor}`}>
-          <Icon className="w-4.5 h-4.5" />
+          <Icon className="w-4 h-4" />
         </div>
         <div>
           <h2 className="font-montserrat font-bold text-gray-900 text-base leading-tight">{title}</h2>
@@ -54,33 +44,14 @@ function SectionCard({ icon: Icon, iconColor, title, subtitle, children }) {
   );
 }
 
-/* ─────────────────────────────────────────
-   Toggle Row
-───────────────────────────────────────── */
-function SaleToggleRow({ sale, onToggle }) {
+function SkeletonRow() {
   return (
-    <div className="flex items-center justify-between py-4 border-b border-gray-50 last:border-0 group">
-      <div className="flex-1 min-w-0 pr-4">
-        <p className="text-sm font-semibold text-gray-800 leading-snug">{sale.label}</p>
-        <p className="text-xs text-gray-400 mt-0.5">{sale.description}</p>
+    <div className="flex items-center justify-between py-4 border-b border-gray-50 animate-pulse">
+      <div className="space-y-2">
+        <div className="h-4 w-40 bg-gray-100 rounded" />
+        <div className="h-3 w-56 bg-gray-100 rounded" />
       </div>
-      <div className="flex items-center gap-3 shrink-0">
-        <span className={`text-xs font-bold px-2.5 py-1 rounded-full transition-all ${
-          sale.active
-            ? 'bg-emerald-50 text-emerald-600'
-            : 'bg-gray-100 text-gray-400'
-        }`}>
-          {sale.active ? 'Active' : 'Inactive'}
-        </span>
-        <label className="toggle-switch">
-          <input
-            type="checkbox"
-            checked={sale.active}
-            onChange={() => onToggle(sale.id)}
-          />
-          <span className="toggle-track" />
-        </label>
-      </div>
+      <div className="w-10 h-6 bg-gray-100 rounded-full" />
     </div>
   );
 }
@@ -89,51 +60,71 @@ function SaleToggleRow({ sale, onToggle }) {
    Main Component
 ───────────────────────────────────────── */
 export default function MarketingControlCenter() {
-  const [sales, setSales] = useState(initialSales);
-  const [offers, setOffers] = useState(initialOffers);
-  const [products, setProducts] = useState(allProducts);
+  /* ── Firestore listeners ── */
+  const { data: siteSettingsData, loading: settingsLoading } = useDocument('site_settings', 'marketing_config');
+  const { data: offers, loading: offersLoading } = useCollection('offers', 'createdAt', 'desc');
+  const { data: products, loading: productsLoading } = useCollection('products', 'createdAt', 'desc');
+
+  /* ── Local UI state ── */
   const [showOfferForm, setShowOfferForm] = useState(false);
   const [newOffer, setNewOffer] = useState({ code: '', type: 'Percentage', discount: '', expiry: '' });
+  const [savingOffer, setSavingOffer] = useState(false);
 
-  /* Handlers */
-  const toggleSale = (id) => setSales(prev =>
-    prev.map(s => s.id === id ? { ...s, active: !s.active } : s)
-  );
+  // Merge Firestore data with defaults
+  const settings = siteSettingsData || {};
+  const activeSalesCount = SALE_CONFIG.filter(s => settings[s.key] === true).length;
 
-  const deleteOffer = (id) => setOffers(prev => prev.filter(o => o.id !== id));
-
-  const addOffer = (e) => {
-    e.preventDefault();
-    if (!newOffer.code || !newOffer.discount) return;
-    setOffers(prev => [...prev, { ...newOffer, id: Date.now() }]);
-    setNewOffer({ code: '', type: 'Percentage', discount: '', expiry: '' });
-    setShowOfferForm(false);
+  /* ── Handlers ── */
+  const toggleSale = async (key) => {
+    const current = settings[key] ?? false;
+    await setDoc(
+      doc(db, 'site_settings', 'marketing_config'),
+      { [key]: !current },
+      { merge: true }
+    );
   };
 
-  const toggleFeatured = (id) => setProducts(prev =>
-    prev.map(p => p.id === id ? { ...p, featured: !p.featured } : p)
-  );
+  const addOffer = async (e) => {
+    e.preventDefault();
+    if (!newOffer.code || !newOffer.discount) return;
+    setSavingOffer(true);
+    try {
+      await addDoc(collection(db, 'offers'), {
+        ...newOffer,
+        code: newOffer.code.toUpperCase(),
+        createdAt: serverTimestamp(),
+      });
+      setNewOffer({ code: '', type: 'Percentage', discount: '', expiry: '' });
+      setShowOfferForm(false);
+    } finally {
+      setSavingOffer(false);
+    }
+  };
 
-  const activeSalesCount = sales.filter(s => s.active).length;
+  const deleteOffer = async (id) => {
+    await deleteDoc(doc(db, 'offers', id));
+  };
+
+  const toggleFeatured = async (productId, currentFeatured) => {
+    await updateDoc(doc(db, 'products', productId), { featured: !currentFeatured });
+  };
 
   return (
     <div className="animate-fade-in">
       {/* Page Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
-          Marketing Control Center
-        </h1>
+        <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Marketing Control Center</h1>
         <p className="text-sm text-gray-400 font-medium mt-1">
-          Manage seasonal promotions, discount codes, and homepage product placement.
+          Manage seasonal promotions, discount codes, and homepage product placement — all changes sync instantly.
         </p>
       </div>
 
       {/* Summary Strip */}
       <div className="grid grid-cols-3 gap-4 mb-8">
         {[
-          { label: 'Active Sales',     value: activeSalesCount,              color: 'text-emerald-600', bg: 'bg-emerald-50' },
-          { label: 'Live Offers',      value: offers.length,                  color: 'text-sky-600',     bg: 'bg-sky-50'     },
-          { label: 'Featured Products',value: products.filter(p => p.featured).length, color: 'text-violet-600', bg: 'bg-violet-50' },
+          { label: 'Active Sales',      value: activeSalesCount,                         color: 'text-emerald-600' },
+          { label: 'Live Offers',       value: offersLoading ? '—' : offers.length,      color: 'text-sky-600'     },
+          { label: 'Featured Products', value: productsLoading ? '—' : products.filter(p => p.featured).length, color: 'text-violet-600' },
         ].map(stat => (
           <div key={stat.label} className="bg-white rounded-xl border border-gray-100 shadow-[0_4px_6px_-1px_rgb(0_0_0/0.05)] px-6 py-4 flex items-center gap-4">
             <span className={`text-3xl font-bold font-montserrat ${stat.color}`}>{stat.value}</span>
@@ -145,66 +136,103 @@ export default function MarketingControlCenter() {
       {/* Main Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-        {/* ── A: Seasonal Sales Toggles ─────────────── */}
+        {/* ── A: Seasonal Sales Toggles ─── */}
         <SectionCard
           icon={Zap}
           iconColor="bg-amber-50 text-amber-500"
           title="Seasonal Sales"
-          subtitle="Activate or pause site-wide promotional events"
+          subtitle="Changes sync instantly to the marketing site"
         >
-          <div>
-            {sales.map(sale => (
-              <SaleToggleRow key={sale.id} sale={sale} onToggle={toggleSale} />
-            ))}
-          </div>
+          {settingsLoading ? (
+            <>
+              <SkeletonRow /><SkeletonRow /><SkeletonRow /><SkeletonRow />
+            </>
+          ) : (
+            SALE_CONFIG.map((sale) => {
+              const isActive = settings[sale.key] === true;
+              return (
+                <div key={sale.key} className="flex items-center justify-between py-4 border-b border-gray-50 last:border-0">
+                  <div className="flex-1 min-w-0 pr-4">
+                    <p className="text-sm font-semibold text-gray-800">{sale.label}</p>
+                    <p className="text-xs text-gray-400 mt-0.5">{sale.description}</p>
+                  </div>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <span className={`text-xs font-bold px-2.5 py-1 rounded-full transition-all ${
+                      isActive ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-100 text-gray-400'
+                    }`}>
+                      {isActive ? 'Active' : 'Inactive'}
+                    </span>
+                    <label className="toggle-switch" title={`Toggle ${sale.label}`}>
+                      <input
+                        type="checkbox"
+                        checked={isActive}
+                        onChange={() => toggleSale(sale.key)}
+                      />
+                      <span className="toggle-track" />
+                    </label>
+                  </div>
+                </div>
+              );
+            })
+          )}
         </SectionCard>
 
-        {/* ── B: Offer Manager ─────────────────────── */}
+        {/* ── B: Offer Manager ─── */}
         <SectionCard
           icon={Tag}
           iconColor="bg-sky-50 text-sky-500"
           title="Offer Manager"
           subtitle="Add or remove discount codes and BOGO deals"
         >
-          {/* Table */}
-          <div className="overflow-x-auto -mx-1">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="text-[11px] uppercase tracking-wide text-gray-400 font-semibold border-b border-gray-50">
-                  <th className="text-left pb-3 px-1">Code</th>
-                  <th className="text-left pb-3 px-1">Type</th>
-                  <th className="text-left pb-3 px-1">Value</th>
-                  <th className="text-left pb-3 px-1">Expiry</th>
-                  <th className="pb-3 px-1"></th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-50">
-                {offers.map(offer => (
-                  <tr key={offer.id} className="group hover:bg-gray-50/60 transition-colors">
-                    <td className="py-3 px-1">
-                      <span className="font-mono text-xs font-bold text-gray-800 bg-gray-100 px-2 py-0.5 rounded">
-                        {offer.code}
-                      </span>
-                    </td>
-                    <td className="py-3 px-1 text-gray-500 text-xs">{offer.type}</td>
-                    <td className="py-3 px-1 font-semibold text-gray-700 text-xs">{offer.discount}</td>
-                    <td className="py-3 px-1 text-gray-400 text-xs">{offer.expiry}</td>
-                    <td className="py-3 px-1 text-right">
-                      <button
-                        onClick={() => deleteOffer(offer.id)}
-                        className="p-1.5 rounded-lg text-gray-300 hover:text-rose-500 hover:bg-rose-50 transition-all opacity-0 group-hover:opacity-100"
-                        aria-label={`Delete ${offer.code}`}
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    </td>
+          {offersLoading ? (
+            <div className="space-y-3 animate-pulse">
+              {[1,2,3].map(i => <div key={i} className="h-10 bg-gray-100 rounded-xl" />)}
+            </div>
+          ) : (
+            <div className="overflow-x-auto -mx-1">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-[11px] uppercase tracking-wide text-gray-400 font-semibold border-b border-gray-50">
+                    <th className="text-left pb-3 px-1">Code</th>
+                    <th className="text-left pb-3 px-1">Type</th>
+                    <th className="text-left pb-3 px-1">Value</th>
+                    <th className="text-left pb-3 px-1">Expiry</th>
+                    <th className="pb-3 px-1" />
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-gray-50">
+                  {offers.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="py-8 text-center text-sm text-gray-400">
+                        No offers yet. Add your first one below.
+                      </td>
+                    </tr>
+                  ) : offers.map(offer => (
+                    <tr key={offer.id} className="group hover:bg-gray-50/60 transition-colors">
+                      <td className="py-3 px-1">
+                        <span className="font-mono text-xs font-bold text-gray-800 bg-gray-100 px-2 py-0.5 rounded">
+                          {offer.code}
+                        </span>
+                      </td>
+                      <td className="py-3 px-1 text-gray-500 text-xs">{offer.type}</td>
+                      <td className="py-3 px-1 font-semibold text-gray-700 text-xs">{offer.discount}</td>
+                      <td className="py-3 px-1 text-gray-400 text-xs">{offer.expiry || '—'}</td>
+                      <td className="py-3 px-1 text-right">
+                        <button
+                          onClick={() => deleteOffer(offer.id)}
+                          className="p-1.5 rounded-lg text-gray-300 hover:text-rose-500 hover:bg-rose-50 transition-all opacity-0 group-hover:opacity-100"
+                          aria-label={`Delete ${offer.code}`}
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
 
-          {/* Add Offer Form (toggle) */}
           {showOfferForm ? (
             <form onSubmit={addOffer} className="mt-5 p-4 bg-sky-50/60 rounded-xl border border-sky-100 animate-slide-down space-y-3">
               <div className="grid grid-cols-2 gap-3">
@@ -254,8 +282,8 @@ export default function MarketingControlCenter() {
               </div>
               <div className="flex gap-2 justify-end pt-1">
                 <button type="button" onClick={() => setShowOfferForm(false)} className="px-4 py-2 text-sm text-gray-500 hover:text-gray-800 transition-colors rounded-lg">Cancel</button>
-                <button type="submit" className="px-4 py-2 text-sm font-semibold bg-sky-500 text-white rounded-lg hover:bg-sky-600 transition-colors shadow-sm">
-                  Save Offer
+                <button type="submit" disabled={savingOffer} className="px-4 py-2 text-sm font-semibold bg-sky-500 text-white rounded-lg hover:bg-sky-600 transition-colors shadow-sm disabled:opacity-60">
+                  {savingOffer ? 'Saving…' : 'Save Offer'}
                 </button>
               </div>
             </form>
@@ -270,47 +298,69 @@ export default function MarketingControlCenter() {
         </SectionCard>
       </div>
 
-      {/* ── C: Featured Product Grid ──────────────── */}
+      {/* ── C: Featured Product Grid ─── */}
       <div className="mt-6">
         <SectionCard
           icon={Star}
           iconColor="bg-violet-50 text-violet-500"
           title="Featured Product Grid"
-          subtitle="Select which items appear on the marketing site's homepage spotlight"
+          subtitle="Click a product to toggle it on the marketing site homepage"
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {products.map(product => (
-              <div
-                key={product.id}
-                onClick={() => toggleFeatured(product.id)}
-                className={`relative p-4 rounded-xl border-2 cursor-pointer select-none transition-all duration-200 ${
-                  product.featured
-                    ? 'border-emerald-400 bg-emerald-50/40 shadow-sm'
-                    : 'border-gray-100 bg-white hover:border-gray-200 hover:shadow-sm'
-                }`}
-              >
-                {/* Product icon placeholder */}
-                <div className={`w-10 h-10 rounded-xl mb-3 flex items-center justify-center ${product.featured ? 'bg-emerald-100' : 'bg-gray-100'}`}>
-                  <ShoppingBag className={`w-5 h-5 ${product.featured ? 'text-emerald-600' : 'text-gray-400'}`} />
+          {productsLoading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[1,2,3,4,5,6].map(i => (
+                <div key={i} className="p-4 rounded-xl border-2 border-gray-100 animate-pulse">
+                  <div className="w-10 h-10 bg-gray-100 rounded-xl mb-3" />
+                  <div className="h-4 w-32 bg-gray-100 rounded mb-2" />
+                  <div className="h-3 w-20 bg-gray-100 rounded" />
                 </div>
-
-                <p className="text-sm font-semibold text-gray-800 leading-snug">{product.name}</p>
-                <p className="text-xs text-gray-400 mt-0.5">{product.category}</p>
-
-                {/* Featured badge */}
-                {product.featured && (
-                  <span className="absolute top-3 right-3 flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-full">
-                    <Star className="w-2.5 h-2.5 fill-emerald-500" /> Featured
+              ))}
+            </div>
+          ) : products.length === 0 ? (
+            <div className="py-12 text-center">
+              <PackageOpen className="w-10 h-10 text-gray-200 mx-auto mb-3" />
+              <p className="text-sm text-gray-400 font-medium">No products in Firestore yet.</p>
+              <p className="text-xs text-gray-300 mt-1">Upload a product first to feature it here.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {products.map(product => (
+                <div
+                  key={product.id}
+                  onClick={() => toggleFeatured(product.id, product.featured)}
+                  className={`relative p-4 rounded-xl border-2 cursor-pointer select-none transition-all duration-200 ${
+                    product.featured
+                      ? 'border-emerald-400 bg-emerald-50/40 shadow-sm'
+                      : 'border-gray-100 bg-white hover:border-gray-200 hover:shadow-sm'
+                  }`}
+                >
+                  {product.imageUrl ? (
+                    <img
+                      src={product.imageUrl}
+                      alt={product.title}
+                      className="w-10 h-10 rounded-xl object-cover mb-3 border border-gray-100"
+                    />
+                  ) : (
+                    <div className={`w-10 h-10 rounded-xl mb-3 flex items-center justify-center ${product.featured ? 'bg-emerald-100' : 'bg-gray-100'}`}>
+                      <ShoppingBag className={`w-5 h-5 ${product.featured ? 'text-emerald-600' : 'text-gray-400'}`} />
+                    </div>
+                  )}
+                  <p className="text-sm font-semibold text-gray-800 leading-snug line-clamp-1">{product.title}</p>
+                  <p className="text-xs text-gray-400 mt-0.5">{product.category}</p>
+                  {product.featured && (
+                    <span className="absolute top-3 right-3 flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-full">
+                      <Star className="w-2.5 h-2.5 fill-emerald-500" /> Featured
+                    </span>
+                  )}
+                  <span className="mt-2 inline-block text-[10px] font-mono text-gray-400">
+                    ₹{product.price?.toLocaleString('en-IN')}
                   </span>
-                )}
-
-                {/* Product ID chip */}
-                <span className="mt-2 inline-block text-[10px] font-mono text-gray-400">{product.id}</span>
-              </div>
-            ))}
-          </div>
+                </div>
+              ))}
+            </div>
+          )}
           <p className="text-xs text-gray-400 text-center mt-5 font-medium">
-            Click any product card to toggle it on / off the homepage spotlight.
+            Click any card to toggle it on / off the homepage spotlight. Changes are instant.
           </p>
         </SectionCard>
       </div>
