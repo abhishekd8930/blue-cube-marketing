@@ -151,12 +151,12 @@ export default function MarketingControlCenter() {
             SALE_CONFIG.map((sale) => {
               const isActive = settings[sale.key] === true;
               return (
-                <div key={sale.key} className="flex items-center justify-between py-4 border-b border-gray-50 last:border-0">
-                  <div className="flex-1 min-w-0 pr-4">
+                <div key={sale.key} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-0 py-4 border-b border-gray-50 last:border-0">
+                  <div className="flex-1 w-full min-w-0 pr-4">
                     <p className="text-sm font-semibold text-gray-800">{sale.label}</p>
                     <p className="text-xs text-gray-400 mt-0.5">{sale.description}</p>
                   </div>
-                  <div className="flex items-center gap-3 shrink-0">
+                  <div className="flex items-center justify-between w-full sm:w-auto gap-3 shrink-0">
                     <span className={`text-xs font-bold px-2.5 py-1 rounded-full transition-all ${
                       isActive ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-100 text-gray-400'
                     }`}>
@@ -189,8 +189,8 @@ export default function MarketingControlCenter() {
               {[1,2,3].map(i => <div key={i} className="h-10 bg-gray-100 rounded-xl" />)}
             </div>
           ) : (
-            <div className="overflow-x-auto -mx-1">
-              <table className="w-full text-sm">
+            <div className="overflow-x-auto w-full pb-2">
+              <table className="w-full text-sm min-w-[500px]">
                 <thead>
                   <tr className="text-[11px] uppercase tracking-wide text-gray-400 font-semibold border-b border-gray-50">
                     <th className="text-left pb-3 px-1">Code</th>
@@ -307,7 +307,7 @@ export default function MarketingControlCenter() {
           subtitle="Click a product to toggle it on the marketing site homepage"
         >
           {productsLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {[1,2,3,4,5,6].map(i => (
                 <div key={i} className="p-4 rounded-xl border-2 border-gray-100 animate-pulse">
                   <div className="w-10 h-10 bg-gray-100 rounded-xl mb-3" />
@@ -323,7 +323,7 @@ export default function MarketingControlCenter() {
               <p className="text-xs text-gray-300 mt-1">Upload a product first to feature it here.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {products.map(product => (
                 <div
                   key={product.id}

@@ -74,7 +74,7 @@ export default function ProductsPage() {
 
         {/* Product Grid */}
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {Array(8).fill(0).map((_, n) => (
               <div key={n} className="animate-pulse flex flex-col gap-4">
                 <div className="bg-gray-200 aspect-[3/4] rounded-sm w-full" />
@@ -100,7 +100,7 @@ export default function ProductsPage() {
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12 animate-fade-in">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-12 animate-fade-in">
             {filteredProducts.map((product) => (
               <ProductCard
                 key={product.id}

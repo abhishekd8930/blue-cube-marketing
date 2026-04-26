@@ -13,9 +13,9 @@ export default function Header() {
             <span className="font-jakarta font-bold text-xl tracking-tighter uppercase text-primary-charcoal whitespace-nowrap">Blue Cube</span>
           </Link>
           <div className="md:hidden">
-            <button type="button" className="hs-collapse-toggle p-2 inline-flex justify-center items-center gap-2 rounded-sm border border-gray-100 font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none transition-all text-sm" data-hs-collapse="#navbar-collapse-basic" aria-controls="navbar-collapse-basic" aria-label="Toggle navigation">
-              <Menu className="hs-collapse-open:hidden flex-shrink-0 w-4 h-4" />
-              <X className="hs-collapse-open:block hidden flex-shrink-0 w-4 h-4" />
+            <button type="button" className="hs-collapse-toggle p-3 min-w-[44px] min-h-[44px] inline-flex justify-center items-center gap-2 rounded-lg border border-gray-100 font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-accent-blue/20 transition-all text-sm active:scale-95" data-hs-collapse="#navbar-collapse-basic" aria-controls="navbar-collapse-basic" aria-label="Toggle navigation">
+              <Menu className="hs-collapse-open:hidden flex-shrink-0 w-5 h-5" />
+              <X className="hs-collapse-open:block hidden flex-shrink-0 w-5 h-5" />
             </button>
           </div>
         </div>
@@ -30,9 +30,9 @@ export default function Header() {
         </div>
 
         <div className="hidden md:flex items-center gap-x-6">
-           <button className="p-2 text-primary-charcoal hover:bg-gray-50 rounded-full transition-colors relative">
+           <button className="p-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-primary-charcoal hover:bg-gray-50 rounded-full transition-colors relative active:scale-95">
               <ShoppingBag className="w-5 h-5" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-accent-blue rounded-full border-2 border-white"></span>
+              <span className="absolute top-2 right-2 w-2 h-2 bg-accent-blue rounded-full border-2 border-white"></span>
            </button>
            <button className="inline-flex items-center gap-x-2 py-2 px-10 rounded-sm bg-primary-charcoal text-white text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-accent-blue focus:outline-none transition-all shadow-xl shadow-blue-500/5">
              Wholesale Inquiry

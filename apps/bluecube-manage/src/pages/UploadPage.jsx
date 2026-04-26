@@ -167,7 +167,7 @@ export default function UploadPage() {
         {/* Basic Information */}
         <SectionBlock icon={Info} iconColor="text-sky-500" title="Basic Details">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="col-span-2 space-y-1.5">
+            <div className="md:col-span-2 space-y-1.5">
               <label className="block text-xs font-bold text-gray-600 font-montserrat uppercase tracking-wider">
                 Product Name <span className="text-rose-400">*</span>
               </label>
@@ -235,7 +235,7 @@ export default function UploadPage() {
               />
             </div>
 
-            <div className="col-span-2 space-y-1.5">
+            <div className="md:col-span-2 space-y-1.5">
               <label className="block text-xs font-bold text-gray-600 font-montserrat uppercase tracking-wider">Detailed Description</label>
               <textarea
                 rows={3}
@@ -320,11 +320,11 @@ export default function UploadPage() {
         </SectionBlock>
 
         {/* Submit Actions */}
-        <div className="flex items-center justify-end gap-4 pt-2 pb-8">
+        <div className="flex flex-col-reverse sm:flex-row items-center justify-end gap-3 sm:gap-4 pt-2 pb-8">
           <button
             type="button"
             onClick={() => { setForm(INITIAL_FORM); setImageFile(null); setImagePreview(null); }}
-            className="py-3 px-8 text-sm font-bold text-gray-400 hover:text-gray-700 transition-colors rounded-xl hover:bg-gray-100"
+            className="w-full sm:w-auto py-3 px-8 text-sm font-bold text-gray-400 hover:text-gray-700 active:bg-gray-200 transition-colors rounded-xl hover:bg-gray-100"
             disabled={isUploading}
           >
             Reset Form
@@ -333,7 +333,7 @@ export default function UploadPage() {
             type="submit"
             id="upload-publish-btn"
             disabled={isUploading || !form.title || !form.price}
-            className="py-3 px-10 bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white text-sm font-bold rounded-full shadow-sm shadow-emerald-200 hover:shadow-md hover:shadow-emerald-200 transition-all duration-200 min-w-[180px] text-center"
+            className="w-full sm:w-auto py-3 px-10 bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 active:scale-95 disabled:bg-gray-300 disabled:cursor-not-allowed text-white text-sm font-bold rounded-full shadow-sm shadow-emerald-200 transition-all duration-200 sm:min-w-[180px] text-center"
           >
             {isUploading ? `Uploading… ${uploadProgress}%` : 'Publish to Catalog'}
           </button>

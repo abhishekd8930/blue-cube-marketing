@@ -13,13 +13,16 @@ export default function ProductCard({ title, price, category, imageUrl }) {
           className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-110"
         />
         
-        {/* Hover Overlay */}
-        <div className="absolute inset-0 bg-primary-charcoal/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3 backdrop-blur-[2px]">
-          <button className="p-3 bg-white rounded-full text-primary-charcoal hover:bg-accent-blue hover:text-white transition-all transform translate-y-4 group-hover:translate-y-0 duration-300 shadow-lg">
-            <ShoppingCart className="w-5 h-5" />
+        {/* Hover Overlay / Touch overlay */}
+        <div className="absolute inset-0 bg-transparent md:group-hover:bg-primary-charcoal/20 transition-colors duration-300 z-10 pointer-events-none md:backdrop-blur-[2px]"></div>
+        
+        {/* Actions (Always visible on mobile bottom, centered on desktop hover) */}
+        <div className="absolute inset-x-0 bottom-3 md:inset-0 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 flex items-center justify-center gap-3 z-20">
+          <button className="p-2.5 sm:p-3 bg-white/90 backdrop-blur-sm md:bg-white rounded-full text-primary-charcoal hover:bg-accent-blue hover:text-white active:bg-accent-blue active:text-white active:scale-90 transition-all transform md:translate-y-4 md:group-hover:translate-y-0 shadow-lg border border-gray-200/50">
+            <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
-          <button className="p-3 bg-white rounded-full text-primary-charcoal hover:bg-accent-blue hover:text-white transition-all transform translate-y-4 group-hover:translate-y-0 duration-300 delay-75 shadow-lg">
-            <Eye className="w-5 h-5" />
+          <button className="p-2.5 sm:p-3 bg-white/90 backdrop-blur-sm md:bg-white rounded-full text-primary-charcoal hover:bg-accent-blue hover:text-white active:bg-accent-blue active:text-white active:scale-90 transition-all transform md:translate-y-4 md:group-hover:translate-y-0 md:delay-75 shadow-lg border border-gray-200/50">
+            <Eye className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
       </div>

@@ -10,6 +10,8 @@ import {
   ExternalLink,
   LogOut,
   ChevronDown,
+  Menu,
+  X,
 } from 'lucide-react';
 import logo from '../assets/logo.png';
 
@@ -18,6 +20,7 @@ export default function AdminLayout() {
   const navigate = useNavigate();
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
     { name: 'Dashboard',  path: '/',          icon: LayoutDashboard },
@@ -37,30 +40,39 @@ export default function AdminLayout() {
           Sticky Top Header
       ───────────────────────────────────────── */}
       <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-100 shadow-[0_1px_3px_0_rgb(0_0_0/0.04)]">
-        <nav className="max-w-screen-2xl mx-auto px-6 lg:px-10 flex items-center h-16 gap-6">
+        <nav className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-10 flex items-center justify-between lg:justify-start h-16 gap-4 lg:gap-6">
+          
+          {/* ── Left Side: Hamburger (Mobile) + Brand ── */}
+          <div className="flex items-center gap-3 shrink-0">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-2 -ml-2 text-gray-500 hover:bg-gray-50 rounded-lg transition-colors"
+              aria-label="Toggle Menu"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+            <Link to="/" className="flex items-center gap-2.5 group">
+              <img
+                src={logo}
+                alt="Blue Cube"
+                className="w-8 h-8 object-contain transition-transform group-hover:scale-105"
+              />
+              <div className="flex flex-col leading-none">
+                <span className="font-montserrat font-black text-[15px] sm:text-[17px] text-gray-900 uppercase tracking-tight">
+                  BlueCube
+                </span>
+                <span className="text-[8px] sm:text-[9px] font-bold uppercase tracking-[0.25em] text-sky-400 mt-0.5">
+                  Manage
+                </span>
+              </div>
+            </Link>
+          </div>
 
-          {/* ── Brand (far left) ─────────────────── */}
-          <Link to="/" className="flex items-center gap-2.5 shrink-0 group mr-4">
-            <img
-              src={logo}
-              alt="Blue Cube"
-              className="w-8 h-8 object-contain transition-transform group-hover:scale-105"
-            />
-            <div className="flex flex-col leading-none">
-              <span className="font-montserrat font-black text-[17px] text-gray-900 uppercase tracking-tight">
-                BlueCube
-              </span>
-              <span className="text-[9px] font-bold uppercase tracking-[0.25em] text-sky-400 mt-0.5">
-                Manage
-              </span>
-            </div>
-          </Link>
+          {/* ── Divider (Desktop only) ──────────────────────────── */}
+          <div className="hidden lg:block w-px h-6 bg-gray-100 shrink-0" />
 
-          {/* ── Divider ──────────────────────────── */}
-          <div className="w-px h-6 bg-gray-100 shrink-0" />
-
-          {/* ── Nav Links (center) ───────────────── */}
-          <div className="flex items-center gap-1 flex-1">
+          {/* ── Nav Links (Desktop center) ───────────────── */}
+          <div className="hidden lg:flex items-center gap-1 flex-1">
             {navItems.map(({ name, path, icon: Icon }) => (
               <Link
                 key={path}
@@ -74,7 +86,6 @@ export default function AdminLayout() {
               >
                 <Icon className="w-4 h-4" />
                 {name}
-                {/* Active underline pip */}
                 {isActive(path) && (
                   <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-sky-400 rounded-full" />
                 )}
@@ -83,55 +94,47 @@ export default function AdminLayout() {
           </div>
 
           {/* ── Right Controls ───────────────────── */}
-          <div className="flex items-center gap-3 shrink-0">
-
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             {/* Live Site link */}
             <a
               href="http://localhost:5176"
               target="_blank"
               rel="noreferrer"
-              id="header-live-site"
-              className="hidden md:flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-gray-700 transition-colors px-2 py-1.5 rounded-lg hover:bg-gray-50"
+              className="hidden lg:flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-gray-700 transition-colors px-2 py-1.5 rounded-lg hover:bg-gray-50"
             >
               <ExternalLink className="w-3.5 h-3.5" />
               Live Site
             </a>
 
-            {/* Bell */}
+            {/* Bell (Hidden on very small screens, responsive touch target minimum 44px) */}
             <button
-              id="header-notifications"
               type="button"
-              className="relative w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-50 transition-all"
-              aria-label="Notifications"
+              className="hidden sm:flex relative w-11 h-11 items-center justify-center rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-50 transition-all"
             >
-              <Bell className="w-4.5 h-4.5" />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-rose-400 rounded-full border-2 border-white" />
+              <Bell className="w-5 h-5" />
+              <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-rose-400 rounded-full border-2 border-white" />
             </button>
 
-            {/* ── Upload Product Button (green, far right) ── */}
+            {/* ── Upload Product Button ── */}
             <button
-              id="header-upload-btn"
-              type="button"
               onClick={handleUploadClick}
-              className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white text-sm font-bold rounded-full shadow-sm shadow-emerald-200 transition-all duration-200 hover:shadow-md hover:shadow-emerald-200"
+              className="flex items-center justify-center min-w-[44px] min-h-[44px] px-3 sm:px-4 py-2 bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 active:scale-95 text-white text-sm font-bold rounded-full shadow-sm shadow-emerald-200 transition-all duration-200"
             >
-              <Upload className="w-4 h-4" />
-              Upload Product
+              <Upload className="w-4 h-4 sm:mr-2" />
+              <span className="hidden sm:inline">Upload Product</span>
             </button>
 
             {/* User avatar chip */}
             <div className="relative">
               <button
-                id="header-user-menu"
-                type="button"
                 onClick={() => setUserMenuOpen(v => !v)}
-                className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full border border-gray-100 hover:border-gray-200 hover:bg-gray-50 transition-all"
+                className="flex items-center justify-center min-w-[44px] min-h-[44px] sm:px-3 rounded-full border border-gray-100 hover:border-gray-200 hover:bg-gray-50 transition-all active:scale-95"
               >
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center text-white shadow-sm">
-                  <User className="w-3.5 h-3.5" />
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center text-white shadow-sm shrink-0">
+                  <User className="w-4 h-4" />
                 </div>
-                <span className="hidden sm:block text-xs font-bold text-gray-700">Admin</span>
-                <ChevronDown className={`w-3.5 h-3.5 text-gray-400 transition-transform ${userMenuOpen ? 'rotate-180' : ''}`} />
+                <span className="hidden sm:block text-xs font-bold text-gray-700 ml-2">Admin</span>
+                <ChevronDown className={`hidden sm:block w-3.5 h-3.5 text-gray-400 ml-2 transition-transform ${userMenuOpen ? 'rotate-180' : ''}`} />
               </button>
 
               {userMenuOpen && (
@@ -140,10 +143,8 @@ export default function AdminLayout() {
                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Signed in as</p>
                     <p className="text-xs font-bold text-gray-800">Blue Cube Staff</p>
                   </div>
-                  <button
-                    className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-rose-500 hover:bg-rose-50 transition-colors font-semibold"
-                  >
-                    <LogOut className="w-3.5 h-3.5" />
+                  <button className="w-full flex items-center gap-2.5 px-4 py-3 text-sm text-rose-500 hover:bg-rose-50 transition-colors font-semibold">
+                    <LogOut className="w-4 h-4" />
                     Sign Out
                   </button>
                 </div>
@@ -151,12 +152,31 @@ export default function AdminLayout() {
             </div>
           </div>
         </nav>
+
+        {/* ── Mobile Menu Dropdown ── */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden bg-white border-b border-gray-100 px-4 py-3 space-y-1 animate-slide-down shadow-sm">
+            {navItems.map(({ name, path, icon: Icon }) => (
+              <Link
+                key={path}
+                to={path}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
+                  isActive(path) ? 'text-sky-500 bg-sky-50' : 'text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+                {name}
+              </Link>
+            ))}
+          </div>
+        )}
       </header>
 
       {/* ─────────────────────────────────────────
           Page Content
       ───────────────────────────────────────── */}
-      <main className="max-w-screen-2xl mx-auto px-6 lg:px-10 pt-10 pb-12 animate-fade-in">
+      <main className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-10 pt-6 sm:pt-10 pb-12 animate-fade-in w-full">
         <Outlet />
       </main>
     </div>

@@ -37,7 +37,7 @@ export default function CollectionGrid() {
 
         {/* Skeleton grid while loading */}
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {[1, 2, 3, 4].map((n) => (
               <div key={n} className="animate-pulse flex flex-col gap-4">
                 <div className="bg-gray-100 aspect-[3/4] rounded-sm w-full" />
@@ -54,7 +54,7 @@ export default function CollectionGrid() {
             <p className="text-sm text-gray-300 mt-1">Mark products as featured in the management portal to display them here.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12 animate-fade-in">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-12 animate-fade-in">
             {featuredProducts.map((product) => (
               <ProductCard
                 key={product.id}
