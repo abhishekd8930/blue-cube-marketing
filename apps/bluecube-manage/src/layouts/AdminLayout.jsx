@@ -156,7 +156,7 @@ export default function AdminLayout() {
       {/* ─────────────────────────────────────────
           Page Content
       ───────────────────────────────────────── */}
-      <main className="max-w-screen-2xl mx-auto px-6 lg:px-10 py-8 animate-fade-in">
+      <main className="max-w-screen-2xl mx-auto px-6 lg:px-10 pt-10 pb-12 animate-fade-in">
         <Outlet />
       </main>
     </div>
