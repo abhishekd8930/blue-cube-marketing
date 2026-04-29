@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 import { Upload, Trash2, CheckCircle2, Info, CloudUpload, CheckCircle } from 'lucide-react';
 import {
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from 'firebase/storage';
-import {
   collection,
   addDoc,
   serverTimestamp,
 } from 'firebase/firestore';
-import { db, storage } from '../../../../packages/shared/firebase.js';
+import { db } from '../../../../packages/shared/firebase.js';
+
+const CLOUDINARY_CLOUD_NAME = 'dl23lkcus';
+const CLOUDINARY_UPLOAD_PRESET = 'bluecube marketing';
 
 const INITIAL_FORM = {
   title: '',
@@ -85,25 +83,34 @@ export default function UploadPage() {
       let imageUrl = '';
 
       if (imageFile) {
-        // Step 1: Upload image to Firebase Storage
-        const storageRef = ref(
-          storage,
-          `products/${Date.now()}_${imageFile.name}`
-        );
-        const uploadTask = uploadBytesResumable(storageRef, imageFile);
-
+        // Step 1: Upload image to Cloudinary
         imageUrl = await new Promise((resolve, reject) => {
-          uploadTask.on(
-            'state_changed',
-            (snap) => {
-              const pct = Math.round(
-                (snap.bytesTransferred / snap.totalBytes) * 100
-              );
+          const formData = new FormData();
+          formData.append('file', imageFile);
+          formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+
+          const xhr = new XMLHttpRequest();
+          xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`);
+
+          xhr.upload.onprogress = (event) => {
+            if (event.lengthComputable) {
+              const pct = Math.round((event.loaded / event.total) * 100);
               setUploadProgress(pct);
-            },
-            reject,
-            async () => resolve(await getDownloadURL(uploadTask.snapshot.ref))
-          );
+            }
+          };
+
+          xhr.onload = () => {
+            if (xhr.status === 200) {
+              const response = JSON.parse(xhr.responseText);
+              resolve(response.secure_url);
+            } else {
+              const response = JSON.parse(xhr.responseText);
+              reject(new Error(response.error?.message || 'Cloudinary upload failed'));
+            }
+          };
+
+          xhr.onerror = () => reject(new Error('Network error during upload'));
+          xhr.send(formData);
         });
       }
 
@@ -306,7 +313,7 @@ export default function UploadPage() {
           {isUploading && (
             <div className="space-y-2">
               <div className="flex justify-between text-xs font-semibold text-gray-500">
-                <span>Uploading to Firebase Storage…</span>
+                <span>Uploading to Cloudinary…</span>
                 <span>{uploadProgress}%</span>
               </div>
               <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">

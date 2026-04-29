@@ -2,16 +2,32 @@ import React from 'react';
 import { ShoppingCart, Eye } from 'lucide-react';
 
 export default function ProductCard({ title, price, category, imageUrl }) {
+  // Helper to optimize Cloudinary images
+  const getOptimizedUrl = (url) => {
+    if (!url || !url.includes('cloudinary.com') || url.endsWith('/upload/')) return null;
+    // Use c_fill to ensure it fits the 3:4 aspect ratio perfectly and stays sharp
+    return url.replace('/upload/', '/upload/q_auto:best,f_auto,w_800,h_1067,c_fill,g_auto/');
+  };
+
+  const optimizedUrl = getOptimizedUrl(imageUrl);
+
   return (
     <div className="group flex flex-col h-full bg-white border border-gray-100 shadow-sm rounded-sm overflow-hidden transition-all duration-300 hover:shadow-2xl hover:border-accent-blue/20">
       
       {/* Image Container with Zoom */}
       <div className="relative aspect-[3/4] overflow-hidden bg-gray-50">
-        <img 
-          src={imageUrl} 
-          alt={title} 
-          className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-110"
-        />
+        {optimizedUrl ? (
+          <img 
+            src={optimizedUrl} 
+            alt={title} 
+            className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-110"
+          />
+        ) : (
+          <div className="w-full h-full flex flex-col items-center justify-center text-gray-300 bg-gray-50">
+            <Eye className="w-8 h-8 mb-2 opacity-20" />
+            <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">No Image</span>
+          </div>
+        )}
         
         {/* Hover Overlay / Touch overlay */}
         <div className="absolute inset-0 bg-transparent md:group-hover:bg-primary-charcoal/20 transition-colors duration-300 z-10 pointer-events-none md:backdrop-blur-[2px]"></div>
